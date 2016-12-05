@@ -12,9 +12,12 @@ import (
 )
 
 const (
-	apikey   = os.Getenv("IMGKEY")
-	csekey   = os.Getenv("CSEKEY")
 	endpoint = "https://www.googleapis.com/customsearch/v1?q="
+)
+
+var (
+	apikey = os.Getenv("IMGKEY")
+	csekey = os.Getenv("CSEKEY")
 )
 
 // Result holds response data
@@ -69,7 +72,7 @@ func NewImageSearch(q string) error {
 
 	defer file.Close()
 
-	if err := io.Copy(file, res.Body); err != nil {
+	if _, err := io.Copy(file, res.Body); err != nil {
 		logrus.Errorf("problem downloading data to file: %v", err)
 	}
 
