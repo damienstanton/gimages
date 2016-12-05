@@ -2,18 +2,17 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"strings"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/jmoiron/jsonq"
 )
 
-const (
-	endpoint = "https://www.googleapis.com/customsearch/v1?q="
-)
+const endpoint = "https://www.googleapis.com/customsearch/v1?q="
 
 var (
 	apikey = os.Getenv("IMGKEY")
@@ -31,22 +30,30 @@ type Result struct {
 	}
 }
 
+func main() {
+	fmt.Println("TODO")
+	err := NewImageSearch("apple")
+	if err != nil {
+		log.Fatal("problem")
+	}
+}
+
 // NewImageSearch dials Google via the custom search REST API
 func NewImageSearch(q string) error {
-	if keyCheck() == false {
-		logrus.Error("Exiting due to missing config vars")
-		return err
+	k := keyCheck()
+	if !k {
+		log.Fatal("Exiting due to missing config vars")
 	}
 
 	req, err := http.NewRequest("GET", endpoint+q, nil)
 	if err != nil {
-		logrus.Errorf("problem connecting to Google CSE: %v", err)
+		log.Errorf("problem connecting to Google CSE: %v", err)
 	}
 
 	client := &http.Client{}
 	res, err := client.Do(req)
 	if err != nil {
-		logrus.Errorf("problem opening connection: %v", err)
+		log.Errorf("problem opening connection: %v", err)
 	}
 
 	defer res.Body.Close()
@@ -54,7 +61,7 @@ func NewImageSearch(q string) error {
 	var result Result
 	jres := json.NewDecoder(res.Body).Decode(&result)
 	if err != nil {
-		logrus.Errorf("problem decoding result: %v", err)
+		log.Errorf("problem decoding result: %v", err)
 	}
 
 	// TODO iterate over each item and pull out image URL
@@ -67,13 +74,13 @@ func NewImageSearch(q string) error {
 	fileName := tokens[len(tokens)-1]
 	file, err := os.Create(fileName)
 	if err != nil {
-		logrus.Errorf("problem writing file: %v", err)
+		log.Errorf("problem writing file: %v", err)
 	}
 
 	defer file.Close()
 
 	if _, err := io.Copy(file, res.Body); err != nil {
-		logrus.Errorf("problem downloading data to file: %v", err)
+		log.Errorf("problem downloading data to file: %v", err)
 	}
 
 	return nil
@@ -82,11 +89,11 @@ func NewImageSearch(q string) error {
 // keyCheck ensures that the appropriate API and CSE key/ids are in place
 func keyCheck() bool {
 	if apikey == "" {
-		logrus.Fatal("You need to export the IMGKEY environment variable")
+		log.Fatal("You need to export the IMGKEY environment variable")
 		return false
 	}
 	if csekey == "" {
-		logrus.Fatal("You need to export the CSEKEY environment variable")
+		log.Fatal("You need to export the CSEKEY environment variable")
 		return false
 	}
 	return true

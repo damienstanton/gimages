@@ -16,3 +16,9 @@ func TestPing(t *testing.T) {
 		t.Fatal("received non-200 response from API endpoint!")
 	}
 }
+
+func TestImageAPI(t *testing.T) {
+	if _, err := NewImageSearch("apple"); err != nil {
+		t.Fatalf("error with retrieving images: %v", err)
+	}
+}
