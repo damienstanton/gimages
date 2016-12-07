@@ -47,13 +47,13 @@ func NewImageSearch(q string) error {
 
 	req, err := http.NewRequest("GET", endpoint+q, nil)
 	if err != nil {
-		log.Errorf("problem connecting to Google CSE: %v", err)
+		log.Fatalf("problem connecting to Google CSE: %v", err)
 	}
 
 	client := &http.Client{}
 	res, err := client.Do(req)
 	if err != nil {
-		log.Errorf("problem opening connection: %v", err)
+		log.Fatalf("problem opening connection: %v", err)
 	}
 
 	defer res.Body.Close()
@@ -61,7 +61,7 @@ func NewImageSearch(q string) error {
 	var result Result
 	jres := json.NewDecoder(res.Body).Decode(&result)
 	if err != nil {
-		log.Errorf("problem decoding result: %v", err)
+		log.Fatalf("problem decoding result: %v", err)
 	}
 
 	// TODO iterate over each item and pull out image URL
@@ -74,13 +74,13 @@ func NewImageSearch(q string) error {
 	fileName := tokens[len(tokens)-1]
 	file, err := os.Create(fileName)
 	if err != nil {
-		log.Errorf("problem writing file: %v", err)
+		log.Fatalf("problem writing file: %v", err)
 	}
 
 	defer file.Close()
 
 	if _, err := io.Copy(file, res.Body); err != nil {
-		log.Errorf("problem downloading data to file: %v", err)
+		log.Fatalf("problem downloading data to file: %v", err)
 	}
 
 	return nil
