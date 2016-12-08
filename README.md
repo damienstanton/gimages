@@ -1,6 +1,6 @@
 ## gimages
-| health | [![CircleCI](https://circleci.com/gh/damienstanton/gimages.svg?style=shield)](https://circleci.com/gh/damienstanton/gimages) | [![Go Report Card](https://goreportcard.com/badge/github.com/damienstanton/gimages)](https://goreportcard.com/report/github.com/damienstanton/gimages) |
-|--------|---------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
+| health | [![CircleCI](https://circleci.com/gh/damienstanton/gimages.svg?style=shield)](https://circleci.com/gh/damienstanton/gimages)  [![Go Report Card](https://goreportcard.com/badge/github.com/damienstanton/gimages)](https://goreportcard.com/report/github.com/damienstanton/gimages) 
+|------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | env | ![Go version](https://img.shields.io/badge/go-1.7.3-blue.svg)  
 
 
